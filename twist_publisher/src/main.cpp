@@ -12,7 +12,9 @@
 
 // Zenoh-specific parameters
 #define MODE "client"
-#define ROUTER_ADDRESS "serial/43.44#baudrate=115200"
+#define ROUTER_ADDRESS "serial/UART_1#baudrate=115200"
+// #define ROUTER_ADDRESS \
+//   "tcp/192.168.1.40:7447"  // change this to match your ROS 2 host router's ip address
 
 /* ---------- LED Functions ----------- */
 void blinkRGB(int r, int g, int b, int sleep_ms)
@@ -94,12 +96,12 @@ void setup(void)
 
   Serial.printf("Connecting to WiFi %s!\n", SSID);
   // Set WiFi in STA mode and trigger attachment
-  WiFi.mode(WIFI_STA);
-  WiFi.begin(SSID, PASS);
-  while (WiFi.status() != WL_CONNECTED)
-  {
-    blinkRGB(0, 0, 255, 500);
-  }
+  // WiFi.mode(WIFI_STA);
+  // WiFi.begin(SSID, PASS);
+  // while (WiFi.status() != WL_CONNECTED)
+  // {
+  //   blinkRGB(0, 0, 255, 500);
+  // }
   Serial.printf("Connected to WiFi [%s] with address [%s]\n", SSID, WiFi.localIP().toString());
   neopixelWrite(RGB_BUILTIN, 0, 0, 255);
   delay(2000);  // go solid indicating success
