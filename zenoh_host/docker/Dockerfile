@@ -1,5 +1,19 @@
 FROM ros:jazzy-ros-core
 
+# setup keys
+RUN set -eux; \
+       key='C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654'; \
+       export GNUPGHOME="$(mktemp -d)"; \
+       gpg --batch --keyserver keyserver.ubuntu.com --recv-keys "$key"; \
+       mkdir -p /usr/share/keyrings; \
+       gpg --batch --export "$key" > /usr/share/keyrings/ros2-testing-archive-keyring.gpg; \
+       gpgconf --kill all; \
+       rm -rf "$GNUPGHOME"
+
+# setup sources.list
+RUN echo "deb [ signed-by=/usr/share/keyrings/ros2-testing-archive-keyring.gpg ] http://packages.ros.org/ros2-testing/ubuntu noble main" > /etc/apt/sources.list.d/ros2-testing.list
+
+
 ## upgrade the base image
 RUN apt update && apt upgrade -y \
   && rm -rf /var/lib/apt/lists/*
