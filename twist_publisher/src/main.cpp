@@ -125,8 +125,14 @@ void setup(void)
   Serial.printf("Starting Pico-ROS node %s domain:%d\n", node.name, node.domain_id);
   picoros_node_init(&node);
 
-  Serial.printf("Declaring publisher on %s\n", pub_log.topic.name);
-  picoros_publisher_declare(&node, &pub_log);
+  printf("Declaring publisher on %s\n", pub_log.topic.name);
+  if(picoros_publisher_declare(&node, &pub_log) == PICOROS_ERROR) {
+    printf("Error declaring publisher on %s\n", pub_log.topic.name);
+    while (1) {
+      blinkRGB(255, 0, 0, 500);
+    }
+  }
+  printf("Declared publisher on %s\n", pub_log.topic.name);
 }
 
 // loop rate is controlled with LED blink sleeping
